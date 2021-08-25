@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage{amsfonts,amssymb,amsthm,amsmath,enumerate,verbatim,mathtools,tikz,bm,mathrsfs,tikz-cd,hyperref,enumitem,graphicx}
+
+\usetikzlibrary{arrows}
+
+\begin{document}
+\title{Hausdorff Dimension and Hausdorff Measure}
+\author{Annie Giokas}
+\date{5/5/2021}
+\maketitle
+%\usepackage[dvips]{color}
+
+\pagestyle{plain} 
+%\setlength{\topmargin}{-1in} 
+%\setlength{\textheight}{9.5in} 
+%\setlength{\textwidth}{7in} 
+%\setlength{\oddsidemargin}{-.2in} 
+%\setlength{\evensidemargin}{-.2in}
+
+\newenvironment{topic}[1]{\begin{trivlist}\item[]{\bf #1:}}{\end{trivlist}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\J}{\mathcal{J}}
+\renewcommand{\H}{\mathcal{H}}
+
+
+\renewcommand{\qed}{\hfill \ensuremath{\Box}}
+
+\newcommand*\interior[1]{\mathring{#1}}
+\newcommand*\closure[1]{\overline{#1}} % (or \bar{#1})
+\newcommand*\boundary[1]{\partial {#1}}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+A really important characteristic of spaces in general is their dimension, which tells us essentially the "complexity" of the space. Just like there are different notions of a metric, there are different ways of looking at the concept of dimension and we are going to talk about the advantages and disadvantages of constructing certain types of definitions for dimension. Specifically, we will first introduce the Minkowski Dimension, then introducing Hausdorff dimension, a more complex way of measuring dimension comparatively and then expanding on it to finally talk about Hausdorff measure. 
+
+\section{Minkowski Dimension}
+Suppose $E$ is a bounded metric space with metric $\rho$, where bounded means that its diameter is finite, so $|E|=\sup\{\rho(x,y):x,y\in E\}<+\infty$. The main idea behind a Minkowski dimension is based on covering of a metric space where as a reminder, a cover of a metric space is a countable collection of sets such that their union contains the metric space. Then we can define a value $M(E,\epsilon)=\min\{k\geq 1: \text{there exists a finite covering } \{E_i\}_{i=1}^k \text{ such that } |E_i|\leq \epsilon \forall i=1,\cdots, k\}$ which essentially gives us the minimum amount of sets (of a certain "size" or rather diameter in this case) needed to cover $E$. Also note that these sets are subsets of the metric space $E$. Intuitively, we can think of this value as having order $\frac{1}{\epsilon^s}$ where $s$ is the dimension of $E$.\cite{morters_peres_2010}
+
+\begin{definition}[Lower Minkowski dimension]
+The \textit{lower Minkowski dimension} of a bounded metric space $E$ is defined as 
+$$\underline{dim}_M E:= \lim_{\epsilon\rightarrow 0}\inf{\frac{\log M(E,\epsilon)}{\log{\frac{1}{\epsilon}}}} $$
+\end{definition}
+
+\begin{definition}[Upper Minkowski dimension]
+The \textit{upper Minkowski dimension} of a bounded metric space $E$ is defined as 
+$$\overline{dim}_M E:= \lim_{\epsilon\rightarrow 0}\sup{\frac{\log M(E,\epsilon)}{\log{\frac{1}{\epsilon}}}} $$
+\end{definition}
+Note that the following inequality always holds:
+$$\underline{dim}_M E \leq \overline{dim}_M E $$
+and when we have equality then we just define the value as 
+$$dim_M E:=\underline{dim}_M E =\overline{dim}_M E $$
+
+A really good example to look at when talking about dimensions are fractal sets such as the Cantor set. Roughly speaking, fractals are sets that have some of the following three typical characteristics. First, self-similarity is a distinctive trait of many fractals. This means that portions of the shape resemble the bigger whole. Next, sets are often considered fractals if they have a very fine structure. This more or less indicates
+that zooming in on the shapes will keep on revealing new details. Last, fractals are generally not defined by classical mathematics, so they are not smooth shapes or familiar geometric objects.
+
+\begin{example}
+The cantor set is constructed like so. Let $C^0=[0,1]$ and define $C^1=[0,\frac{1}{3}]\cup[\frac{2}{3},1]\subset C^0$ by removing the central interval of length $\frac{1}{3}$. In general, $C^n$ is a union of $2^n$ intervals of length $3^{-n}$ and $C^{n+1}$ is obtained by removing the central third of each. This gives a decreasing nested sequence of compact sets whose intersection is the Cantor set $C$. \\
+We will show that $dim_M(C)=\log_3{2}$.
+\proof:
+The construction gives a covering of $C$ that uses $2^n$ intervals of length $3^{-n}$. Thus for $\epsilon$ such that $3^{-n}\leq\epsilon<3^{-n+1}$ we have $$M(C,\epsilon)\leq2^n$$
+hence $\overline{dim_M}(C)\leq \frac{\log{2}}{\log{3}}$
+
+Conversely, the centers of the $n$th generation intervals form a $3^{-n}$-separated set of size $2^n$, so $M_{sep}(C,3^{-n})\geq 2^n$ where $M_{sep}(C,\epsilon)$ is the number of elements in a maximal $\epsilon$-separated subset $X$ of of $C$. Thus
+$$\underline{dim_M}(C)\geq  \frac{\log{2}}{\log{3}}$$
+Since we know the inequality of lower and upper Minkowski dimension, we can conclude that $\underline{dim_M}(C)=\overline{dim_M}(C)=\frac{\log{2}}{\log{3}}$.
+Therefore the Minkowski dimension exists and equals $\frac{\log{2}}{\log{3}}$.
+\end{example} 
+
+One of the disadvantages of using the Minkowski dimension is that it lacks the \textit{countable stability property} which means that we don't always have the next equality:
+$$dim\cup_{k=1}^{\infty}E_k = \sup\{dim E_k:K\geq 1\} $$
+\begin{example}
+One of the better examples of showing this is the problem we face with singletons. It is easy to see that the Minkowski dimension of singleton sets $\{x\}$ is 0, however if we take the popular set which can be represented as a countable union of singletons $$\{\frac{1}{n}|n\in \N\}\cup \{0\} $$
+then we will see that it has positive Minkowski dimension instead.\cite{bishop_peres_2016}
+\proof 
+Let us denote this set by $A$ and observe that $\frac{1}{n-1}-\frac{1}{n}=\frac{1}{n(n-1)}>\frac{1}{n^2}$. Therefore for $\epsilon>0$, if we choose $n$ so that $(n+1)^{-2}<\epsilon\leq n^{-2}$, then $n\leq\epsilon^{-\frac{1}{2}}$ and $n$ distinct intervals of length $\epsilon$ are needed to cover the points $1,\frac{1}{2},\cdots,\frac{1}{n}$. The interval $[0,\frac{1}{n+1}]$ can be covered by $n+1$ additional intervals of length $\epsilon$. Thus 
+$$\epsilon\leq N(K,\epsilon)\leq 2\epsilon^{-\frac{1}{2}}+1$$
+So we can conclude that $dim_M(A)=\frac{1}{2}$
+\end{example}
+
+
+
+\section{Hausdorff dimension}
+One of the ways of dealing with the aforementioned problem of the Minkowski dimension is to introduce the concept of Hausdorff dimension. For Minkowski, we were evaluating the coverings crudely by counting the number of sets in the covering, but for Hausdorff dimension, we are going to also consider infinite coverings (not just finite ones) and take the "size" of the covering sets that we will measure simply by taking their diameters. To do this, we will introduce a couple of new definitions.\cite{morters_peres_2010}
+
+\begin{definition}[$\alpha$-value]
+For all $\alpha\geq 0 $ and covering $\{E_i\}_{i=1}^\infty$ we say that the \textit{$\alpha$-value} of this covering is 
+$$\sum_{i=1}^{\infty}|E_i|^{\alpha} $$
+\end{definition}
+
+\begin{definition}[$\alpha$-Hausdorff content]
+For all $ \alpha\geq 0$ the \textit{$\alpha$-Hausdorff content} of a metric space $E$ is defined as 
+$\H_{\infty}^{\alpha}(E):=\inf\{\sum_{i=1}^{\infty}|E_i|^{\alpha}: \{E_i\}_{i=1}^{\infty} \text{ is a covering of } E\} $
+\end{definition}
+Basically, we are trying to get the $\alpha$-value of the most efficient covering. Note that if $0\leq \alpha \leq \beta$ and $\H_{\infty}^{\alpha}(E)=0$ then $\H_{\infty}^{\beta}(E)=0$as well. 
+
+\begin{definition}
+The Hausdorff dimension of set $E$ is 
+$$dim E=\inf\{\alpha\geq 0:\H_{\infty}^{\alpha}(E)=0\}= \sup\{\alpha\geq 0:\H_{\infty}^{\alpha}(E)>0\}$$
+\end{definition}
+Note that Hausdorff dimension of a set can be infinite, but as it turns out, Hausdorff dimension of subsets of $\R^d$ are no larger than $d$ in general.
+
+
+
+It can be checked that Hausdorff dimension has the countable stability property, but now a separate issue with Hausdorff dimension is that it does not make it possible to distinguish the size of the sets of the same dimension. A good example of this is if we take a ball, a sphere and a line segment which all have 1-Hausdorff content at most 1.To overcome this obstacle, we introduce a better version of the Hausdorff dimension: the Hausdorff measure. 
+
+But first, We are now going to introduce H{\"o}lder continuous maps on Hausdorff dimension which will help us talk about general upper bounds for the dimension of graph and range of functions on the Hausdorff dimension.
+
+\begin{definition}[H{\"o}lder continuous function]
+A function $f:(E_1,\rho_1)\rightarrow (E_2,\rho_2)$ that maps two metric spaces is \textit{$\alpha$-H{\"o}lder continuous} if there exists a global constant $C>0$ such that 
+$\rho_2(f(x),f(y))\leq C\rho_1(x,y) \text{for all }x,y\in E_1$
+$C$ is called the \textit{H{\"o}lder constant}.
+
+\end{definition}
+
+Let $f$ be a function $f:A\rightarrow \R^d$ where $A\subseteq [0,\infty)$. Then 
+\begin{definition}[Graph]
+The \textit{graph} of $f$ is $$Graph_f:=\{(t,f(t)):t\in A\}\subseteq \R^{d+1}$$
+\end{definition}
+
+\begin{definition}[Range]
+The \textit{range} (or \textit{path}) of $f$ is $$Range_f:=f(A)=\{f(t):t\in A\}\subseteq \R^d$$
+\end{definition}
+
+\begin{lemma}
+Let $f:[0,1]\rightarrow \R^d$ is an $\alpha$-H{\"o}lder continuous function. Then \\
+a)$dim(Graph_f)\leq 1+(1-\alpha)(d \land \frac{1}{\alpha})$\\
+b) for any $A\subseteq [0,1]$ we have $dim f(A)\leq\frac{dim A}{\alpha}$
+\end{lemma}
+\proof
+a) Since $f$ is $\alpha$-H{\"o}lder continuous, then we can find $C>0$ such that if $|t-s|\leq \epsilon$ for $s,t\in [0,1]$ (Reminder that we are using the standard metric here) then $|f(t)-f(s)|\leq C\epsilon^{alpha}$. We can cover $[0,1]$ by no more than $\ceil{\frac{1}{\epsilon}}$(ceiling of the value) intervals of length $\epsilon$. The image of each such interval is then contained in a ball of diameter $C\epsilon^{alpha}$. We can do two things:
+\begin{itemize}
+    \item We can either cover each ball by no more than a constant multiple of $\epsilon^{d\alpha-d}$ balls of diameter $\epsilon$. In this case, remember that the dimension of a set $E$ is $s$ when the order of $M(E,\epsilon)$ is $\epsilon^{-s}$, therefore since here we need a constant multiple of $\epsilon^{d\alpha-d-1}$ product sets which has diameter of order $\epsilon$.
+    \item or use the fact that subintervals of length $(\frac{\epsilon}{C})^{\frac{1}{\alpha}}$ in the domain are mapped into balls of diameter $\epsilon$ to cover the image inside the ball by a constant multiple of $\epsilon^{1-\frac{1}{\alpha}}$ balls of radius $\epsilon$.
+\end{itemize}
+
+$\qed$ \\
+b) Suppose that $dim(A)<\beta<\infty$. Then we can find a covering $A_1,A_2,\cdots$ such that $A\subset \cup_j A_j$ and $\sum_j|A_j|^{\beta}<\epsilon$. Then $f(A_1),f(A_2),\cdots$ is a covering of $f(A)$, and $|f(A_j)|\leq C|A_j|^{alpha}$ where $C$ is a H{\"o}lder constant. Thus we have 
+$$\sum_j|f(A_j)|^{\frac{\beta}{\alpha}}\leq C^{\frac{\beta}{\alpha}}\sum_j|A_j|^{\beta}<C^{\frac{\beta}{\alpha}}\epsilon $$
+and as $\epsilon \rightarrow 0$, the right-hand side goes to $0$. Therefore we can conclude that $dimf(A)\leq\frac{\beta}{\alpha}$
+$\qed$
+
+\section{Hausdorff Measure}
+Let $X$ be a metric space and $E\subseteq X$. For all $\alpha\geq0$ and $\delta>0$ define 
+$$\H_{\delta}^{\alpha}(E)=\inf\{\sum_{i=1}^{\infty}|E_i|^{\alpha}:E_1,E_2,\cdots \text{ cover of } E \text{ such that } |E_i|\leq \delta\} $$
+So we are only considering coverings of $E$ by sets that have maximum diameter $\delta$. 
+
+\begin{definition}[$\alpha$-Hausdorff measure]
+The \textit{$\alpha$-Hausdorff measure} of the set $E$ is
+$$\H^{\alpha}(E)=\sup_{\delta>0}\H_{\delta}^{\alpha}(E) = \lim_{\delta\rightarrow 0}\H_{\delta}^{\alpha}(E) $$
+\end{definition}
+
+$\alpha$-Hausdorff measure is actually an outer measure if we add the fact that $\H^{\alpha}(\emptyset)=0$ because it already has countable subadditivity and monotonicity. 
+
+We will show how to represent Hausdorff dimension using Hausdorff measure with the next lemma:
+\begin{lemma}
+For any metric space $E$
+$$dim E=\inf\{\alpha:\H^{\alpha}(E)=0\}=\inf\{\alpha:\H^{\alpha}(E)<\infty\} $$
+$$dim E=\sup\{\alpha:\H^{\alpha}(E)=\infty\}=\sup\{\alpha:\H^{\alpha}(E)>\infty\} $$
+\end{lemma}
+\proof
+First we prove that $dim E=\inf\{\alpha:\H^{\alpha}(E)=0\} $ and we will do that by showing two things: first is that $dim E>\alpha$ implies $\inf\{\alpha:\H^{\alpha}(E)=0\}\geq \alpha$ and second, the reverse, $dim E<\alpha$ implies $\inf\{\alpha:\H^{\alpha}(E)=0\}\leq\alpha$ \\
+
+Let $dim E>\alpha$, then For all $ \beta\leq \alpha$, define $c:=\H_{\infty}^{\beta}(E)>0$ then we can see that $\H_{\delta}^{\beta}(E)\geq c > 0$ (because in the case of $\delta=\infty$ we are allowing sets in a covering of any diameter so of course it contains more options for the infimum to be smaller). Then by using the definition of Hausdorff measure, $$\H^{\beta}(E)=\sup_{\delta>0}\H_{\delta}^{\beta}(E)\geq \inf_{\delta>0}\H_{\delta}^{\beta}(E)\geq c>0$$
+Thus
+$$\H^{\beta}(E)\geq c>0 $$
+Then we can see that $\H^{\beta}(E)>0$ for all $\beta\leq \alpha$ so we can infer that $\H^{\beta}(E)=0$ when $\beta>\alpha$ so we can conclude that the infimum of the set of such $\beta$'s is more than or equal to $\alpha$:
+$$\inf\{\beta: \H^{\beta}(E)=0\}\geq \alpha $$
+
+Conversely, let us assume that $dim E<\alpha$. This means that $\inf\{\alpha\geq 0:\H_{\infty}^{\alpha}(E)=0\}<\alpha$ which can only happen when $\H_{\infty}^{\alpha}(E)=0$. By definition, we have that $\inf\{\sum_{i=1}^{\infty}|E_i|^{\alpha}:E_1,E_2,\cdots \text{ cover of } E \text{ such that } |E_i|\leq \infty\}=0$ and we can rephrase it as for all $\delta>0$ we can find a covering by sets $E_1,E_2,\cdots$ such that $\sum_{i=1}^{\infty}|E_i|^{\alpha}<\delta$. For each $E_i$ we have that $|E_i|<\delta^{\frac{1}{\alpha}}$ which means that $$\H_{\delta^{\frac{1}{\alpha}}}^{\alpha}(E)<\delta$$
+If we let $\delta\rightarrow 0$, then we get 
+$$\lim_{\delta\rightarrow 0}\H_{\delta^{\frac{1}{\alpha}}}^{\alpha}(E)=\H^{\alpha}(E)=0$$
+Because the diameters are dependent on $\alpha$, if we consider $\beta\leq \alpha$, then by taking $\delta\rightarrow 0$ will achieve the same result so the infimum of such $\beta$'s are at most $\alpha$:
+$$\inf\{\beta: \H^{\beta}(E)=0\}\leq\alpha $$
+
+The other equalities are proved similarly.
+$\qed$\\
+
+
+\begin{example}\cite{Eijnnden-2018}
+We are going to go back to the Cantor set denoted by $C$ and now try to show its Hausdorff dimension is the same as the Minkowski dimension (which is $\frac{\log{2}}{\log{3}}$). We know that $C=\cup_{k=0}^{\infty}C_k$ is made of $2^k$ intervals of length $3^{-k}$. Let us denote $s:=\frac{\log{2}}{\log{3}}$.
+
+First, for the upper bound, let $\delta>0$ and choose $k\in \N$ such that $3^{-k}\leq\delta$. Then $C_K$ is a $\delta$-cover of $C$, so $\H_{\delta}^s(C)\leq 2^k3^{-ks}=1$ (this is by using $s=\frac{\log{2}}{\log{3}}$). By letting $k\rightarrow \infty$, we get $\H^{\alpha}(C)\leq 1$. This is therefore the upper bound.\\
+
+To find the lower bound is a bit trickier. We will actually show that $\frac{1}{2}\leq \sum_{i=1}^m|E_i|^s$ for any finite cover $E_1,E_2,\cdots$ of $C$ consisting of intergals in $[0,1]$. To see that this is sufficient, we can consider the following: covers worth considering consist of intervals in $[0,1]$. Given such a cover $\{U_i\}_{i\in \N}$, let $\epsilon>0$ and define the sets $E_i$ as follows:
+\begin{enumerate}
+    \item $U_i\subseteq E_i$ for all $i\in \N$
+    \item Every $E_i$ is an open interval in $[0,1]$
+    \item $(\sum_{i=1}^{\infty}|U_i|^s)+\epsilon\geq \sum_{i=1}^{\infty}|E_i|^s$
+\end{enumerate}
+The last property can be satisfied by setting $|E_i|=(|U_i|^s+\frac{\epsilon}{2^i})^{\frac{1}{s}}$, as an example. Then ${E_i}_{i\in \N}$ is an open cover of $C$, so by compactness of the Cantor set we can find a finite subcover $\cup_{j=1}^m E_j$. Assuming the inequality we want to show is true, so if we have $\frac{1}{2}\leq \sum_{i=1}^m|E_i|^s$ then we get the inequalities:
+$$\sum_{i=1}^{\infty}|U_i|^s+\epsilon \geq \sum_{i=1}^{\infty}|E_i|^s\geq \sum_{i=1}^m|E_i|^s\geq \frac{1}{2} $$
+
+By letting $\epsilon$ go to $0$ gives us a positive lower bound for $\sum_{i=1}^{\infty}|U_i|^s$, and thus also for $\H_{\delta}^s(C)$. So now we only have to prove the inequality in the first place. 
+
+We will be counting the intersections of $E_i$ with the intervals in $C_k$. For every $E_j$ choose $k$ such that $3^{-(k+1)}\leq|E_j|\leq3^{-k}$. Intervals in $C_k$ are at least a distance $3^{-k}$ apart, so $E_j$ intersects at most one interval of $C_k$. Thus, for $l\geq k$ there are at most $2^{l-k}=2^l3^{-sk}\leq 2^l3^s|E_j|^s$.
+
+There are only finitely many $E_j$, so we can find the largest $E_j$, let us call it $E_{k_0}$. Every $E_j$ intersects with at most $2^{k_0}3^s|E_j|^s$ intervals of $C_{k_0}$. In total, the $E_i$ must intersect all $2^{k_0}$ intervals of $C_k$, because they form a cover of $C$. We can use this to prove our inequality, like so:
+$$2^{k_0}\leq \sum_{j=1}^m 2^{k_0}3^s |E_j|^s$$
+$$1\leq \sum_{j=1}^m 3^s |E_j|^s$$
+$$3^{-s}\leq \sum_{j=1}^m |E_j|^s$$
+and because we defined $s=\frac{\log{2}}{\log{3}}$ then $3^{-\frac{\log{2}}{\log{3}}}=\frac{1}{2}$
+so we have 
+$$3^{-s}=\frac{1}{2}\leq \sum_{j=1}^m |E_j|^s$$
+$\qed$
+\end{example}
+
+\bibliographystyle{plain}
+\bibliography{bibliography.bib}
+
+\end{document}
