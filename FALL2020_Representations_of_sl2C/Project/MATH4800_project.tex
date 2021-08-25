@@ -1,0 +1,227 @@
+\documentclass{article}
+\usepackage{amsfonts,amssymb,amsthm,amsmath,enumerate,verbatim,mathtools,tikz,bm,mathrsfs,tikz-cd,hyperref,enumitem,amsthm,graphicx}
+\usepackage{xcolor}
+\usetikzlibrary{arrows}
+
+\begin{document}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\F}{\mathbb{F}}
+
+\newcommand{\g}{\mathfrak{g}}
+
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\J}{\mathcal{J}}
+
+
+\title{Exploring finite representations of $sl(2,\C)$}
+\author{Annie Giokas}
+\date{11/11/2020}
+\maketitle
+%\usepackage[dvips]{color}
+\pagestyle{empty} 
+\setlength{\topmargin}{-.4in} 
+\setlength{\textheight}{9.5in} 
+\setlength{\textwidth}{7in} 
+\setlength{\oddsidemargin}{-.2in} 
+\setlength{\evensidemargin}{-.2in}
+
+\newenvironment{topic}[1]{\begin{trivlist}\item[]{\bf #1:}}{\end{trivlist}}
+
+\renewcommand{\qed}{\hfill\blacksquare}
+\newcommand{\qedwhite}{\hfill \ensuremath{\Box}}
+
+\newcommand*\interior[1]{\mathring{#1}}
+\newcommand*\closure[1]{\overline{#1}} % (or \bar{#1})
+\newcommand*\boundary[1]{\partial {#1}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\section{Lie algebras and its representations}
+\begin{definition}A \textcolor{red}{Lie algebra} is a vector space over a field $k$ with a bilinear product $[x,y]$ such that the product satisfies the next two conditions:
+\begin{itemize}
+\item Alternativity:\\
+$[x,x]=0$ for any $x\in \g$
+
+\item Jacobi identity:\\
+$[[x,y],z]+[[y,z],x]+[[z,x],y]=0$ for any $x,y,z\in \g$
+\end{itemize}
+\end{definition}
+*Alternativity condition is equivalent to $[x,y]=-[y,x]$ for any $x,y\in \g$
+
+For any algebra $\g$ we have a linear map $ad:\g\rightarrow End_k\g$ given by $$(ad\; x)(y)=[x,y]$$
+
+\begin{definition} Let $V$ be a vector space over field $\K$. A \textcolor{red}{representation} of Lie algebra $\g$ on $V$ is a homomorphism of Lie algebras $\pi:\g\rightarrow(End_{\K}V)^{k}$ which we can simply write as 
+$$\pi:\g\rightarrow End_{\K}V$$
+The way the bracket is defined in $End_{\K}V$ makes $\pi$ k-linear and satisfies:
+$$\pi([X,Y])=\pi(X)\pi(Y)-\pi(Y)\pi(X) $$
+
+\end{definition}
+\section{$\mathfrak{sl}(2,\C)$}
+$\mathfrak{sl}(n,\F)$ is the special linear Lie algebra of order n over a field $\F$. It is comprised of $n\times n$ matrices with trace zero and with the Lie bracket defined like so:
+$$[X,Y]=XY-YX $$
+We are going to be talking about the scenario when $n=2$ and $\F=\C$. We can describe elements of $\mathfrak{sl}(2,\C)$ explicitly like so:
+$$\mathfrak{sl}(2,\C)=\{\begin{pmatrix}
+a & b \\
+c & -a 
+\end{pmatrix}| a,b,c\in \C\}$$
+
+It is a 3 dimensional complex Lie algebra which has the basis:
+
+\begin{align*}
+&
+h=\begin{pmatrix}
+1 & 0\\
+0 & -1 
+\end{pmatrix} 
+&
+e=\begin{pmatrix}
+0 & 1\\
+0 & 0 
+\end{pmatrix}
+&
+&
+f=\begin{pmatrix}
+0 & 0\\
+1 & 0 
+\end{pmatrix}
+&
+\end{align*}
+
+This is the best basis to work with because of the convenient relations between them:\\
+$$[h,e]=2e $$
+$$[h,f]=-2f $$
+$$[e,f]=h $$
+
+\subsection{Irreducible representations of $\mathfrak{sl}(2,\C)$ on finite-dimensional vector spaces}
+\begin{definition}An \textcolor{red}{invariant subspace} for a complex-linear representation of $sl(2,\C)$ on a finite-dimensional vector space $V$ is a complex vector subspace $U$ such that $\phi(X)U\subset U$ for all $X\in sl(2,\C)$.
+\end{definition}
+\begin{definition}We say that a representation on a nonzero space $V$ is \textcolor{red}{irreducible} if the only invariant subspaces are 0 and $V$ itself.
+\end{definition}
+
+Now that we have established necessary definitions, we can begin to show the irreducible representations explicitly. 
+
+\begin{theorem}
+For each integer $m\geq 1$ there exists up to equivalence a unique irreducible complex-linear representation $\pi$ of $\mathfrak{sl}(2,\C)$ on a complex vector space $V$ of dimension $m$. In $V$ thre is a basis ${v_0,v_1,\cdots,v_{m}}$ such that:
+\begin{itemize}
+\item $\pi(h)v_j = (m-1 - 2j)v_j$
+\item $\pi(f)v_j=v_{j-1}$ with $\pi(f)v_{-1}=0$
+\item $\pi(e)v_j = j(m-1+i-1)$ with $\pi(e)v_m =0$
+\end{itemize}
+\end{theorem}
+proof:\\
+
+CONSTRUCTION AND UNIQUENESS:\\
+Let $\pi$ be a complex-linear irreducible representation of $\mathfrak{sl}(2,\C)$ on a complex vector space $V$ with dimension $m$. Since $V$ is a complex vector space and the complex numbers is a closed field, then we can find a nonzero eigenvector $v$ of $\pi(h)$ with eigenvalue $\lambda$, which by definition means that $\pi(h)v=\lambda v$. 
+We can show that the vectors $\pi(e)v,\pi(e)^2v,\cdots$ are also eigenvectors of $\pi(h)$, by first using the fact that $\pi$ is a representation and therefore $\pi([h,e])=\pi(h)\pi(e)-\pi(e)\pi(h)$. Then we have:
+$$\pi(h)\pi(e)v = \pi(e)\pi(h)v + \pi([h,e])v $$
+Then we can use the fact that $\pi(h)v = \lambda v$ and the relations of the basis elements gives us $[h,e] =2e$, therefore we have:
+$$\pi(h)\pi(e)v = \pi(e)\lambda v +\pi(2e)v $$
+$$\pi(h)\textcolor{green}{\pi(e)v} = (\lambda + 2)\textcolor{green}{\pi(e)v} $$
+With a similar process, we can show the rest of the vectors $\pi(e)^2, \pi(e)^3,\cdots$ will be eigenvectors with eigenvalues $\lambda +4,\lambda +6,\cdots$, respectively. It is obvious that the eigenvalues we get are distinct and therefore the eigenvectors are independent. 
+
+By using the same method as above, using $\pi(f)$ instead of $\pi(e)$ will also give us new eigenvectors $\pi(f)v,\pi(f)^2v,\cdots$ if we use the same eigenvector v of $\pi(h)$ with eigenvalue $\lambda$, except the eigenvalues will decrease by 2 in this case. So we will have $\pi(h)\pi(f)v = (\lambda -2)\pi(f)v$. 
+
+We can see that we are essentially moving around in different eigenspaces. This is why the basis element $e$ is called a \textcolor{red}{raising operator}, while $f$ is called a \textcolor{red}{lowering operator}. In general, these are ladder operators. This is important to address since we are essentially going to be looking at $V$ as the direct sum of the eigenspaces like so: $$V = \bigoplus_{\alpha}V_{\alpha} $$
+
+Since $V$ is finite-dimensional, we can find a vector from $V$, let's call it $v_{0}$ for convenience, such that:
+\begin{enumerate}
+\item $v_{0}\neq 0$
+\item $\pi(h)v_{0}=\lambda v_0$
+\item $\pi(f)v_{0} = 0$
+\end{enumerate}
+
+Let us define\footnote{Knapp's book actually uses $\pi(f)$ to cycle through the vectors, but this way it makes more sense for the picture.} $v_{j} = \pi(e)^{j+1} v_{0}$. Since we know that using $\pi(e)$ increases the eigenvalue by 2, we can write it as $$\pi(h)v_j = (\lambda+2j)v_j $$
+There is a minimum integer $N$ such that $\pi(e)^{N+1}v_{0} = 0$. By using the finite-dimensionality argument, $\pi(h)$ as a map of $V$ of dimension $m$ has at most $m$ distinct eigenvalues. Then the vectors $v_0,v_{1},\cdots, v_{N}$ (basically the list $v_0,ev_{0},e^2v_{0},\cdots,f^{N}v_{0}$) are independent and
+\begin{itemize}
+\item $\pi(h)v_j = (\lambda +2j)v_j$
+\item $\pi(e)v_{j} =v_{j+1} $
+\item $\pi(f)v_0 = 0$ 
+\end{itemize}
+
+Now we can show that these list of vectors span $V$ itself. For this, it is enough to show that the list of vectors
+is stable (closed under)  $\pi(f)$. In fact, we can show that:
+$$\pi(e)v_j = j(\lambda-j+1)v_{j-1} \text{ with } v_{-1} = 0  $$
+We can prove this using induction, with the base case $j=m-1$ being $\pi(e)v_{m-1} =0 $. We assume that it is true for $j$ and we are now going to prove it for $v_{j+1}$.
+
+$$\pi(f)v_{j+1}=\pi(f)\pi(e)v_j=\pi([f,e])v_j+\pi(e)\pi(f)v_j=$$
+$$\pi(-h)v_j+\pi(e)\pi(f)v_j=-\pi(h)v_j+\pi(e)(j(-\lambda -j+1)v_{j-1})=$$
+$$-(\lambda+2j)v_j - (j(-\lambda -j+1)\pi(e)v_{j-1} =-(\lambda+2j)v_j - (j(-\lambda -j+1)v_j$$
+$$(-(\lambda+2j)- (j(-\lambda -j+1))v_j = (-\;ambda-j-j+j(-\lambda-j)+j)v_j= $$
+$$(-\lambda-j+j(\lambda -j))v_j= (-\lambda-j)(1+j)v_j $$
+\includegraphics[scale=0.5]{Screenshot_2}\\
+To finish showing uniqueness, we show that $\lambda = m-1$. We have $Tr\pi(h) = Tr(\pi(e)\pi(f)-\pi(f)\pi(e))=0$ therefore we will have:
+$$\sum_{j=0}^m(\lambda-2j)=0 $$
+and we find that $\lambda = m$. This is really interesting, because this means the eigenvalues are integers!
+
+EXISTENCE:\\
+We define $\pi(h)$,$\pi(e)$, and $\pi(f)$ by the given the conditions given above and extend it linearly, by doing easy computation it is easy to see that:\\
+$$\pi([h,e])=\pi(h)\pi(e)-\pi(e)\pi(h) $$
+$$\pi([h,f])=\pi(h)\pi(f)-\pi(f)\pi(h) $$
+$$\pi([e,f])=\pi(e)\pi(f)-\pi(f)\pi(e) $$
+
+This proves that $\pi$ is a representation. To show that it is irreducible, let $U$ be a nonzero invariant subspace. Since $U$ is invariant under $\pi(h)$,$U$ is spanned by a subset of the basis vectors ${v_0,v_1,\cdots, v_{m-1}}$. Let's take a $v_k$ from the basis which is in $U$ and let's apply $\pi(f)$ several times, we will see that $V_0$ is also in $U$. Repeated application of $\pi(e)$ then shows that $U=V$. Therefore by definition $\pi$ is irreducible.
+$\qed$
+
+
+\subsection{Representations of $\mathfrak{sl}(2,\C)$}
+\begin{definition}
+Let $\phi$ be a complex-linear representation of $\mathfrak{sl}(2,\C)$ on a finite-dimensional complex vector space $V$. $V$ is \textcolor{red}{completely reducible} if we can find invariant subspaces $V_1,V_2,\cdots V_r$ of $V$ such that 
+$$V=V_1\oplus V_2 \oplus \cdots V_r $$ and such that the restriction of the representation to each $V_i$ is irreducible.  
+\end{definition}
+\begin{theorem} 
+If $V$ is a finite-dimensional complex vector space that has a complex-linear representation of $\mathfrak{sl}(2,\C)$, then $V$ is completely reducible. 
+\end{theorem}
+
+To prove this theorem we will require 4 lemmas.
+\begin{lemma}
+If $\pi$ is a representation of $\mathfrak{sl}(2,\C)$, then $Z=\frac{1}{2}\pi(h)^2+\pi(h)+2\pi(f)\pi(e)$ commutes with each $\pi(X)$ for $X\in \mathfrak{sl}(2,\C)$.
+\end{lemma}
+
+\begin{lemma}[Schur's Lemma]
+Let $\g=\mathfrak{sl}(2,\C)$. If $\pi:\g\rightarrow ENDV$ and $\pi':\g\rightarrow EndV'$ are irreducible finite-dimensional representations and if $L:V\rightarrow V'$ is a linear map such that $L\pi(X)=\pi'(X)L$ for all $X\in \g$, then $L=0$ or $L$ is invertible. If $Z:V\rightarrow V$ is a linear map such that $Z\pi(X)=\pi(X)Z$ for all $X\in \g$, then $Z$ is scalar. 
+\end{lemma}
+
+\begin{lemma}
+If $pi$ is an irreducible representation of $\mathfrak{sl}(2,\C)$ of dimension $n+1$, then the operator $Z$ of Lemma 2.3 acts as the scalar $\frac{1}{2}n^2+n$, which is not $0$ unless $\pi$ is trivial. 
+\end{lemma}
+
+\begin{lemma}
+Let $\pi:\mathfrak{sl}(2,\C)\rightarrow EndV$ be a finite-dimensional representation, and let $U\subset V$ be an invariant subspace of codimension 1. Then there is a 1-dimensional invariant subspace $W$ such that $V=U\oplus W$. 
+\end{lemma}
+So now that we have stated the lemmas, we can prove Theorem 2.2.\\
+Let $\pi$ be a representation of $\mathfrak{sl}(2,\C)$ on $M$, and let $N\neq 0$ be an invariant subspace. Put
+$$V=\{Y\in EndM|Y:M\rightarrow N \text{and} Y|_{N} \text{is a scalar}\} $$
+Using linear algebra we can see that $V\neq 0$. Define a linear function $\sigma:\mathfrak{sl}(2,\C)\rightarrow End(EndM)$ by 
+$$\sigma(X)\gamma = \pi(X)\gamma -\gamma\pi(X) $$
+for $\gamma\in EndM$ and $X\in \mathfrak{sl}(2,\C)$.\\
+We can check directly that $\sigma[X,Y]=\sigma(X)\sigma(Y)-\sigma(Y)\sigma(X)$, therefore $\sigma$ is a representation of $\mathfrak{sl}(2,\C)$ on $EndM$.\\
+So we can show that $V$ as a subspace of $EndM$ is an invariant subspace under $\sigma$. In fact, let $\gamma(M)\subset N$ and $\gamma|_N=\lambda1$. In the right side of the expression 
+$$\sigma(X)\gamma = \pi(X)\gamma-\gamma\pi(X)$$
+the first term carries $M$ to $N$ since $\gamma$ carries $M$ to $N$ and $\pi(X)$ carries $N$ to $N$, and the second term carries $M$ into $N$ since $\pi(x)$ takes $M$ to $M$ and $\gamma$ takes $M$ to $N$. Thus $\sigma(X)\gamma$ takes $M$ into $N$. On $N$, the action $\sigma(X)\gamma$ is given by 
+$$\sigma(X)\gamma(n)=\pi(X)\gamma(n)-\gamma\pi(X)(n)=\lambda\pi(X)(n)-\lambda\pi(X)(n) = 0 $$
+Thus $V$ is an invariant subspace. \\
+So, the argument above shows that the subspace $U$ of $V$ given by 
+$$U=\{\gamma\in V|\gamma=0 \text{on} N\} $$
+is an invariant subspace. So, it's easy to see that $dimV/U=1$. By Lemma 2.6, $V=U\oplus W$ for a 1-dimensional invariant subspace $W=\C\gamma$, where $\gamma$ is a nonzero scalar $\lambda1$ on $N$. The invariance of $W$ means that $\sigma(X)\gamma=0$ since 1-dimensional representations are $0$. Therefore $\gamma$ commutes with $\pi(X)$ for all $X\in  \mathfrak{sl}(2,\C)$. But then the kernel of $\gamma$ is a nonzero invariant subspace of $M$. Since $\gamma$ is a nonsingular on $N$(being a nonzero scalar there), we must have $M=N\oplus ker\gamma$. 
+$\qed$
+
+\begin{corollary}
+LIf $\pi$ is a complex-linear representation of $\mathfrak{sl}(2,\C)$ on a finite-dimensional complex vector space $V$, then $\pi(h)$ is diagonable, all of its eigenvalues are integers, and the multiplicity of an eigenvalue $k$ equals the multiplicity of $-k$. 
+\end{corollary}
+\begin{corollary}
+If $\phi$ is a complex-linear representation(not necessarily an irredusible one) of $\mathfrak{sl}(2,\C)$ on a finite-dimensional complex vector space $V$, and if each vector $v\in V$ is in an finite-dimensional invariant subspace of $V$, then $V$ is the direct sum of finite-dimensional invariant subspaces on which $\mathfrak{sl}(2,\C)$ acts irreducibly.  
+\end{corollary}
+
+\end{document}
